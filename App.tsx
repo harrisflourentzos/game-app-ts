@@ -1,20 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, ImageBackground } from "react-native";
+import { Provider } from "react-redux";
+import StartGameScreen from "./screens/StartGameScreen";
+import { store } from "./store/store";
+import { LinearGradient } from "expo-linear-gradient";
+import { dark, light } from "./themes/themes";
+
+const theme = true ? dark : light;
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <LinearGradient
+        style={styles.backgroundContainer}
+        colors={[theme.color.background1, theme.color.secondary]}
+      >
+        <ImageBackground
+          source={require("./assets/background.png")}
+          style={styles.backgroundContainer}
+          resizeMode="cover"
+          imageStyle={{ opacity: 0.2 }}
+        >
+          <StartGameScreen />
+        </ImageBackground>
+      </LinearGradient>
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  backgroundContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
