@@ -1,5 +1,3 @@
-import { StyleSheet } from "react-native";
-
 type theme = {
   color: {
     primary: string;

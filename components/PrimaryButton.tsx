@@ -4,7 +4,7 @@ import { dark, light } from "../themes/themes";
 
 const theme = true ? dark : light;
 
-type Props = { children: JSX.Element | string; pressHanlder?: () => void };
+type Props = { children: JSX.Element | string; onPress?: () => void };
 
 const PrimaryButton = (props: Props) => {
   return (
@@ -15,7 +15,7 @@ const PrimaryButton = (props: Props) => {
             ? [styles.buttonInnerContainer, styles.pressed]
             : styles.buttonInnerContainer
         }
-        onPress={props.pressHanlder}
+        onPress={props.onPress}
       >
         <Text style={styles.buttonText}>{props.children}</Text>
       </Pressable>

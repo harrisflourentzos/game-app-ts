@@ -1,14 +1,30 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, ImageBackground } from "react-native";
+import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
 import { Provider } from "react-redux";
 import StartGameScreen from "./screens/StartGameScreen";
 import { store } from "./store/store";
 import { LinearGradient } from "expo-linear-gradient";
 import { dark, light } from "./themes/themes";
+import { useState } from "react";
+import GameScreen from "./screens/GameScreen";
 
 const theme = true ? dark : light;
 
 export default function App() {
+  const initialUserNumberState: number | null = null;
+
+  const [userNumber, setUserNumber] = useState<number | null>();
+
+  function userNumberPickedHandler(num: number) {
+    setUserNumber(num);
+  }
+
+  const currentScreen = userNumber ? (
+    <GameScreen userNumber={userNumber} />
+  ) : (
+    <StartGameScreen onUserNumberPicked={userNumberPickedHandler} />
+  );
+
   return (
     <Provider store={store}>
       <LinearGradient
@@ -21,7 +37,9 @@ export default function App() {
           resizeMode="cover"
           imageStyle={{ opacity: 0.2 }}
         >
-          <StartGameScreen />
+          <SafeAreaView style={styles.backgroundContainer}>
+            {currentScreen}
+          </SafeAreaView>
         </ImageBackground>
       </LinearGradient>
     </Provider>
