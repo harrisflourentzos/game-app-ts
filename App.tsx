@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
+import { StyleSheet, ImageBackground, SafeAreaView, View } from "react-native";
 import { Provider } from "react-redux";
 import StartGameScreen from "./screens/StartGameScreen";
 import { store } from "./store/store";
@@ -7,23 +7,57 @@ import { LinearGradient } from "expo-linear-gradient";
 import { dark, light } from "./themes/themes";
 import { useState } from "react";
 import GameScreen from "./screens/GameScreen";
+import GameFinishedScreen from "./screens/GameFinishedScreen";
 
 const theme = true ? dark : light;
 
-export default function App() {
-  const initialUserNumberState: number | null = null;
+const guesses: Array<number> = [];
 
-  const [userNumber, setUserNumber] = useState<number | null>();
+export default function App() {
+  const [userNumber, setUserNumber] = useState<number | null>(null);
+  const [gameIsFinished, setGameIsFinished] = useState<boolean>(false);
+
+  function saveGuessHandler(guess: number) {
+    guesses.push(guess);
+  }
 
   function userNumberPickedHandler(num: number) {
     setUserNumber(num);
   }
 
-  const currentScreen = userNumber ? (
-    <GameScreen userNumber={userNumber} />
-  ) : (
+  function gameIsFinishedHandler() {
+    setGameIsFinished(true);
+  }
+
+  function playAgainHandler() {
+    setUserNumber(null);
+    setGameIsFinished(false);
+  }
+
+  let currentScreen = (
     <StartGameScreen onUserNumberPicked={userNumberPickedHandler} />
   );
+
+  if (userNumber) {
+    currentScreen = (
+      <GameScreen
+        userNumber={userNumber}
+        onGameIsFinished={gameIsFinishedHandler}
+        onGuess={saveGuessHandler}
+        onGameIsCanceled={playAgainHandler}
+      />
+    );
+  }
+
+  if (gameIsFinished && userNumber) {
+    currentScreen = (
+      <GameFinishedScreen
+        onPlayAgain={playAgainHandler}
+        userNumber={userNumber}
+        guesses={guesses}
+      />
+    );
+  }
 
   return (
     <Provider store={store}>
@@ -37,9 +71,11 @@ export default function App() {
           resizeMode="cover"
           imageStyle={{ opacity: 0.2 }}
         >
-          <SafeAreaView style={styles.backgroundContainer}>
-            {currentScreen}
-          </SafeAreaView>
+          <View style={styles.screenContainer}>
+            <SafeAreaView style={styles.backgroundContainer}>
+              {currentScreen}
+            </SafeAreaView>
+          </View>
         </ImageBackground>
       </LinearGradient>
     </Provider>
@@ -49,5 +85,9 @@ export default function App() {
 const styles = StyleSheet.create({
   backgroundContainer: {
     flex: 1,
+  },
+  screenContainer: {
+    flex: 1,
+    padding: 20,
   },
 });

@@ -6,15 +6,16 @@ type theme = {
     background1: string;
     background2: string;
     background3: string;
+    cancelButton: string;
   };
 };
 
 type commonTheme = {
-  buttonText: string;
+  whiteText: string;
 };
 
 const common: commonTheme = {
-  buttonText: "#ffffffe9",
+  whiteText: "#ffffffe9",
 };
 
 export const light: theme & commonTheme = {
@@ -25,18 +26,20 @@ export const light: theme & commonTheme = {
     background1: "#494949",
     background2: "#767575",
     background3: "#8c8c8c",
+    cancelButton: "#ff6060",
   },
   ...common,
 };
 
 export const dark: theme & commonTheme = {
   color: {
-    primary: "#ff8400",
+    primary: "#83ff78",
     secondary: "#ffa13c",
-    tertiary: "#d9d9d9",
+    tertiary: "#ffaf5a",
     background1: "#3a3a3a",
     background2: "#525252",
     background3: "#8c8c8c",
+    cancelButton: "#ff5353",
   },
   ...common,
 };

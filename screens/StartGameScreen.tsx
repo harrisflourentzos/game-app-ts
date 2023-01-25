@@ -2,6 +2,7 @@ import { Alert, StyleSheet, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import { light, dark } from "../themes/themes";
+import Title from "../components/Title";
 
 const theme = true ? dark : light;
 
@@ -38,22 +39,34 @@ const StartGameScreen = (props: Props) => {
   }
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.textInput}
-        maxLength={2}
-        keyboardType="numeric"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={changeTextHandler}
-        value={enteredText}
-      />
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={resetHandler}>Reset</PrimaryButton>
-        </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={confirmHandler}>Confirm</PrimaryButton>
+    <View>
+      <View style={styles.titleContainer}>
+        <Title>Your Guess</Title>
+      </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          maxLength={2}
+          keyboardType="numeric"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={changeTextHandler}
+          value={enteredText}
+        />
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton color={theme.color.secondary} onPress={resetHandler}>
+              Reset
+            </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton
+              color={theme.color.secondary}
+              onPress={confirmHandler}
+            >
+              Confirm
+            </PrimaryButton>
+          </View>
         </View>
       </View>
     </View>
@@ -64,7 +77,7 @@ export default StartGameScreen;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginTop: 150,
+    marginTop: 50,
     padding: 20,
     marginHorizontal: 20,
     backgroundColor: theme.color.background2,
@@ -93,5 +106,8 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.color.primary,
     borderBottomWidth: 2,
     textAlign: "center",
+  },
+  titleContainer: {
+    margin: 20,
   },
 });

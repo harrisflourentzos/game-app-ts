@@ -1,10 +1,21 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ViewStyle,
+  StyleProp,
+} from "react-native";
 import React from "react";
 import { dark, light } from "../themes/themes";
 
 const theme = true ? dark : light;
 
-type Props = { children: JSX.Element | string; onPress?: () => void };
+type Props = {
+  children: JSX.Element | string;
+  onPress?: () => void;
+  color: string;
+};
 
 const PrimaryButton = (props: Props) => {
   return (
@@ -12,12 +23,25 @@ const PrimaryButton = (props: Props) => {
       <Pressable
         style={({ pressed }) =>
           pressed
-            ? [styles.buttonInnerContainer, styles.pressed]
-            : styles.buttonInnerContainer
+            ? [
+                styles.buttonInnerContainer,
+                { backgroundColor: props.color, borderColor: props.color },
+              ]
+            : [styles.buttonInnerContainer, { borderColor: props.color }]
         }
         onPress={props.onPress}
       >
-        <Text style={styles.buttonText}>{props.children}</Text>
+        {({ pressed }) => (
+          <Text
+            style={
+              pressed
+                ? [styles.buttonText, { color: theme.whiteText }]
+                : [styles.buttonText, { color: props.color }]
+            }
+          >
+            {props.children}
+          </Text>
+        )}
       </Pressable>
     </View>
   );
@@ -29,15 +53,12 @@ const styles = StyleSheet.create({
   buttonOuterContainer: { margin: 4 },
   buttonInnerContainer: {
     borderRadius: 40,
-    borderColor: theme.color.secondary,
     borderWidth: 2,
     padding: 8,
-    backgroundColor: theme.color.background2,
+    backgroundColor: "transparent",
   },
   buttonText: {
-    color: theme.color.secondary,
     fontWeight: "bold",
     textAlign: "center",
   },
-  pressed: { backgroundColor: theme.color.secondary },
 });
