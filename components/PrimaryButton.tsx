@@ -5,6 +5,7 @@ import {
   Pressable,
   ViewStyle,
   StyleProp,
+  TextStyle,
 } from "react-native";
 import React from "react";
 import { dark, light } from "../themes/themes";
@@ -14,6 +15,8 @@ const theme = true ? dark : light;
 type Props = {
   children: JSX.Element | string;
   onPress?: () => void;
+  textStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
   color: string;
 };
 
@@ -26,8 +29,13 @@ const PrimaryButton = (props: Props) => {
             ? [
                 styles.buttonInnerContainer,
                 { backgroundColor: props.color, borderColor: props.color },
+                props.containerStyle,
               ]
-            : [styles.buttonInnerContainer, { borderColor: props.color }]
+            : [
+                styles.buttonInnerContainer,
+                { borderColor: props.color },
+                props.containerStyle,
+              ]
         }
         onPress={props.onPress}
       >
@@ -35,8 +43,12 @@ const PrimaryButton = (props: Props) => {
           <Text
             style={
               pressed
-                ? [styles.buttonText, { color: theme.whiteText }]
-                : [styles.buttonText, { color: props.color }]
+                ? [
+                    styles.buttonText,
+                    { color: theme.whiteText },
+                    props.textStyle,
+                  ]
+                : [styles.buttonText, { color: props.color }, props.textStyle]
             }
           >
             {props.children}

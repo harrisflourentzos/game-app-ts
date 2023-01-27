@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleProp, StyleSheet, Text, ViewStyle } from "react-native";
 import React from "react";
 import { dark, light } from "../themes/themes";
 
-type Props = { children?: JSX.Element | string };
+type Props = { children?: JSX.Element | string; style?: StyleProp<ViewStyle> };
 const theme = true ? dark : light;
 
 const Title = (props: Props) => {

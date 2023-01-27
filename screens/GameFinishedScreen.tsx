@@ -41,8 +41,13 @@ const GameFinishedScreen = ({ userNumber, guesses, onPlayAgain }: Props) => {
       </ShadowContainer>
       <View style={styles.flatListContainer}>
         <View style={styles.cpuSummaryContainer}>
-          <Text style={styles.cpuSummaryText}>CPU guesses: </Text>
-          <Text style={styles.cpuSummaryText}>{guesses.length.toString()}</Text>
+          <Text style={styles.cpuSummaryText}>
+            The CPU took{" "}
+            <Text style={{ color: theme.color.primary, fontWeight: "bold" }}>
+              {guesses.length}
+            </Text>{" "}
+            tries to guess your number:
+          </Text>
         </View>
         <FlatList
           data={guesses}
@@ -94,7 +99,6 @@ const styles = StyleSheet.create({
   cpuSummaryText: {
     color: theme.color.secondary,
     fontSize: 24,
-    fontWeight: "bold",
   },
   guessItemShadowContainer: {
     alignSelf: "center",

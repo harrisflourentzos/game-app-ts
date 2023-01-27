@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, TextInput, View } from "react-native";
+import { Alert, StyleSheet, TextInput, View, Text } from "react-native";
 import React, { useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import { light, dark } from "../themes/themes";
@@ -41,9 +41,10 @@ const StartGameScreen = (props: Props) => {
   return (
     <View>
       <View style={styles.titleContainer}>
-        <Title>Your Guess</Title>
+        <Title>Guess The Number</Title>
       </View>
       <View style={styles.inputContainer}>
+        <Text style={styles.instructionText}>Choose a Number:</Text>
         <TextInput
           style={styles.textInput}
           maxLength={2}
@@ -109,5 +110,9 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     margin: 20,
+  },
+  instructionText: {
+    color: theme.color.primary,
+    fontSize: 20,
   },
 });

@@ -11,14 +11,13 @@ import GameFinishedScreen from "./screens/GameFinishedScreen";
 
 const theme = true ? dark : light;
 
-const guesses: Array<number> = [];
-
 export default function App() {
   const [userNumber, setUserNumber] = useState<number | null>(null);
   const [gameIsFinished, setGameIsFinished] = useState<boolean>(false);
+  const [guesses, setGuesses] = useState(new Array<number>());
 
   function saveGuessHandler(guess: number) {
-    guesses.push(guess);
+    setGuesses((state) => [...state, guess]);
   }
 
   function userNumberPickedHandler(num: number) {
@@ -32,6 +31,7 @@ export default function App() {
   function playAgainHandler() {
     setUserNumber(null);
     setGameIsFinished(false);
+    setGuesses([]);
   }
 
   let currentScreen = (

@@ -4,6 +4,7 @@ import { light, dark } from "../themes/themes";
 import Title from "../components/Title";
 import { generateRandomBetween } from "../utils/rng";
 import PrimaryButton from "../components/PrimaryButton";
+import { Ionicons } from "@expo/vector-icons";
 
 const theme = true ? dark : light;
 type direction = "higher" | "lower";
@@ -20,6 +21,12 @@ let max = 100;
 
 const GameScreen = (props: Props) => {
   const [guess, setGuess] = useState(generateRandomBetween(min, max));
+
+  useEffect(() => {
+    // reset outer variables when(and only when) component loads for the first time
+    min = 1;
+    max = 100;
+  }, []);
 
   useEffect(() => {
     props.onGuess(guess);
@@ -64,13 +71,13 @@ const GameScreen = (props: Props) => {
             color={theme.color.secondary}
             onPress={feedbackHandler.bind(this, "higher")}
           >
-            +
+            <Ionicons name="md-add" size={20} />
           </PrimaryButton>
           <PrimaryButton
             color={theme.color.secondary}
             onPress={feedbackHandler.bind(this, "lower")}
           >
-            -
+            <Ionicons name="md-remove" size={20} />
           </PrimaryButton>
         </View>
       </View>
@@ -78,8 +85,9 @@ const GameScreen = (props: Props) => {
         <PrimaryButton
           onPress={props.onGameIsCanceled}
           color={theme.color.cancelButton}
+          textStyle={styles.cancelButton}
         >
-          {"<" + "Cancel"}
+          {"Cancel"}
         </PrimaryButton>
       </View>
     </View>
@@ -129,5 +137,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignSelf: "flex-start",
+  },
+  cancelButton: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
