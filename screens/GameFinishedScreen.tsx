@@ -1,10 +1,17 @@
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  useWindowDimensions,
+} from "react-native";
 import Title from "../components/Title";
 import ShadowContainer from "../components/ShadowContainer";
 import React from "react";
 import { dark, light } from "../themes/themes";
 import PrimaryButton from "../components/PrimaryButton";
 import themeSlice from "../store/theme-slice";
+import { is } from "immer/dist/internal";
 
 type Props = {
   userNumber: number;
@@ -14,6 +21,8 @@ type Props = {
 const theme = true ? dark : light;
 
 const GameFinishedScreen = ({ userNumber, guesses, onPlayAgain }: Props) => {
+  const { width, height } = useWindowDimensions();
+
   const renderGuessElement = (guess: number) => {
     return (
       <ShadowContainer style={styles.guessItemShadowContainer}>
@@ -26,11 +35,21 @@ const GameFinishedScreen = ({ userNumber, guesses, onPlayAgain }: Props) => {
     onPlayAgain();
   }
 
+  const isLandscape = width > height;
+
   return (
-    <View style={styles.container}>
+    <View style={styles.rootContainer}>
       <Title>Game Finished!</Title>
-      <ShadowContainer style={styles.userSummaryShadowContainer}>
-        <View style={styles.userSummaryTextContainer}>
+      <ShadowContainer
+        style={[
+          styles.userSummaryShadowContainer,
+          {
+            marginVertical: isLandscape ? 10 : 30,
+            padding: isLandscape ? 10 : 20,
+          },
+        ]}
+      >
+        <View style={styles.userSummaryContainer}>
           <Text style={styles.userSummaryText}>You picked: </Text>
           <Text
             style={[styles.userSummaryText, { color: theme.color.primary }]}
@@ -39,22 +58,26 @@ const GameFinishedScreen = ({ userNumber, guesses, onPlayAgain }: Props) => {
           </Text>
         </View>
       </ShadowContainer>
-      <View style={styles.flatListContainer}>
-        <View style={styles.cpuSummaryContainer}>
-          <Text style={styles.cpuSummaryText}>
-            The CPU took{" "}
-            <Text style={{ color: theme.color.primary, fontWeight: "bold" }}>
-              {guesses.length}
-            </Text>{" "}
-            tries to guess your number:
-          </Text>
-        </View>
+      <View
+        style={
+          isLandscape
+            ? styles.cpuSummaryContainerLandscape
+            : styles.cpuSummaryContainerPortrait
+        }
+      >
+        <Text style={styles.cpuSummaryText}>
+          The CPU took{" "}
+          <Text style={{ color: theme.color.primary, fontWeight: "bold" }}>
+            {guesses.length}
+          </Text>{" "}
+          tries to guess your number:
+        </Text>
         <FlatList
           data={guesses}
           renderItem={({ item }) => renderGuessElement(item)}
         />
       </View>
-      <View style={styles.navigationContainer}>
+      <View style={styles.bottom}>
         <PrimaryButton onPress={playAgainHandler} color={theme.color.primary}>
           Play Again!
         </PrimaryButton>
@@ -66,27 +89,16 @@ const GameFinishedScreen = ({ userNumber, guesses, onPlayAgain }: Props) => {
 export default GameFinishedScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  rootContainer: {
     flex: 1,
-    padding: 20,
     alignItems: "center",
   },
   userSummaryShadowContainer: {
     alignItems: "center",
-    marginTop: 40,
-    padding: 20,
   },
-  userSummaryTextContainer: {
+  userSummaryContainer: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  cpuSummaryContainer: {
-    margin: 20,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  flatListContainer: {
-    flex: 6,
   },
   navigationContainer: {
     marginTop: 20,
@@ -95,6 +107,17 @@ const styles = StyleSheet.create({
     color: theme.color.secondary,
     fontSize: 24,
     fontWeight: "bold",
+  },
+  cpuSummaryContainerPortrait: {
+    flex: 6,
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  cpuSummaryContainerLandscape: {
+    flex: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 20,
   },
   cpuSummaryText: {
     color: theme.color.secondary,
@@ -108,5 +131,9 @@ const styles = StyleSheet.create({
   },
   guessItemText: {
     color: theme.color.secondary,
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: "flex-end",
   },
 });

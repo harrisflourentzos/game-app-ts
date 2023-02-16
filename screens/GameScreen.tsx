@@ -1,4 +1,10 @@
-import { StyleSheet, Text, View, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  useWindowDimensions,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { light, dark } from "../themes/themes";
 import Title from "../components/Title";
@@ -21,6 +27,7 @@ let max = 100;
 
 const GameScreen = (props: Props) => {
   const [guess, setGuess] = useState(generateRandomBetween(min, max));
+  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     // reset outer variables when(and only when) component loads for the first time
@@ -56,13 +63,20 @@ const GameScreen = (props: Props) => {
     setGuess(generateRandomBetween(min, max));
   }
 
+  const isLandscape = width > height;
+
   return (
-    <View style={styles.gameScreenContainer}>
+    <View style={styles.rootContainer}>
       <Title>CPU's Guess</Title>
       <View style={styles.guessContainer}>
         <Text style={styles.numberText}>{guess}</Text>
       </View>
-      <View style={styles.userFeedbackContainer}>
+      <View
+        style={[
+          styles.userFeedbackContainer,
+          { marginTop: isLandscape ? 20 : 40 },
+        ]}
+      >
         <Text style={styles.userFeedbackText}>
           Is the guess higher or lower?
         </Text>
@@ -85,9 +99,10 @@ const GameScreen = (props: Props) => {
         <PrimaryButton
           onPress={props.onGameIsCanceled}
           color={theme.color.cancelButton}
-          textStyle={styles.cancelButton}
+          textStyle={styles.cancelButtonText}
+          containerStyle={styles.cancelButtonContainer}
         >
-          {"Cancel"}
+          {"CANCEL"}
         </PrimaryButton>
       </View>
     </View>
@@ -97,7 +112,7 @@ const GameScreen = (props: Props) => {
 export default GameScreen;
 
 const styles = StyleSheet.create({
-  gameScreenContainer: {
+  rootContainer: {
     flex: 1,
     alignItems: "center",
   },
@@ -122,7 +137,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   userFeedbackContainer: {
-    marginTop: 40,
     alignItems: "center",
   },
   userFeedbackText: {
@@ -138,8 +152,12 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignSelf: "flex-start",
   },
-  cancelButton: {
+  cancelButtonText: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  cancelButtonContainer: {
+    paddingVertical: 2,
+    paddingHorizontal: 6,
   },
 });

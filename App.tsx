@@ -1,5 +1,11 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, ImageBackground, SafeAreaView, View } from "react-native";
+import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import {
+  StyleSheet,
+  ImageBackground,
+  SafeAreaView,
+  View,
+  StatusBar,
+} from "react-native";
 import { Provider } from "react-redux";
 import StartGameScreen from "./screens/StartGameScreen";
 import { store } from "./store/store";
@@ -61,21 +67,23 @@ export default function App() {
 
   return (
     <Provider store={store}>
+      <ExpoStatusBar style="light" />
       <LinearGradient
-        style={styles.backgroundContainer}
+        style={styles.rootContainer}
         colors={[theme.color.background1, theme.color.secondary]}
       >
         <ImageBackground
           source={require("./assets/background.png")}
-          style={styles.backgroundContainer}
+          style={styles.rootContainer}
           resizeMode="cover"
           imageStyle={{ opacity: 0.2 }}
         >
-          <View style={styles.screenContainer}>
-            <SafeAreaView style={styles.backgroundContainer}>
+          {/* TODO: SafeArea does not seem to be working */}
+          <SafeAreaView style={styles.rootContainer}>
+            <View style={[styles.rootContainer, styles.currentScreenContainer]}>
               {currentScreen}
-            </SafeAreaView>
-          </View>
+            </View>
+          </SafeAreaView>
         </ImageBackground>
       </LinearGradient>
     </Provider>
@@ -83,11 +91,12 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  backgroundContainer: {
+  rootContainer: {
     flex: 1,
   },
-  screenContainer: {
-    flex: 1,
-    padding: 20,
+  currentScreenContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+    paddingTop: StatusBar.currentHeight! + 10,
   },
 });

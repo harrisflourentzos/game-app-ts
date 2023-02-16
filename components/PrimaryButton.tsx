@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   buttonInnerContainer: {
     borderRadius: 40,
     borderWidth: 2,
-    padding: 8,
+    padding: 6,
     backgroundColor: "transparent",
   },
   buttonText: {

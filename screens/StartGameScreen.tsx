@@ -1,4 +1,12 @@
-import { Alert, StyleSheet, TextInput, View, Text } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  TextInput,
+  View,
+  Text,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
 import React, { useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import { light, dark } from "../themes/themes";
@@ -39,44 +47,52 @@ const StartGameScreen = (props: Props) => {
   }
 
   return (
-    <View>
-      <View style={styles.titleContainer}>
-        <Title>Guess The Number</Title>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.instructionText}>Choose a Number:</Text>
-        <TextInput
-          style={styles.textInput}
-          maxLength={2}
-          keyboardType="numeric"
-          autoCapitalize="none"
-          autoCorrect={false}
-          onChangeText={changeTextHandler}
-          value={enteredText}
-        />
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton color={theme.color.secondary} onPress={resetHandler}>
-              Reset
-            </PrimaryButton>
-          </View>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton
-              color={theme.color.secondary}
-              onPress={confirmHandler}
-            >
-              Confirm
-            </PrimaryButton>
+    <ScrollView style={styles.rootContainer}>
+      <KeyboardAvoidingView style={styles.rootContainer} behavior="position">
+        <View>
+          <Title>Guess The Number</Title>
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.instructionText}>Choose a Number:</Text>
+          <TextInput
+            style={styles.textInput}
+            maxLength={2}
+            keyboardType="numeric"
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={changeTextHandler}
+            value={enteredText}
+          />
+          <View style={styles.buttonsContainer}>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton
+                color={theme.color.secondary}
+                onPress={resetHandler}
+              >
+                Reset
+              </PrimaryButton>
+            </View>
+            <View style={styles.buttonContainer}>
+              <PrimaryButton
+                color={theme.color.secondary}
+                onPress={confirmHandler}
+              >
+                Confirm
+              </PrimaryButton>
+            </View>
           </View>
         </View>
-      </View>
-    </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
 export default StartGameScreen;
 
 const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+  },
   inputContainer: {
     marginTop: 50,
     padding: 20,
@@ -107,9 +123,6 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.color.primary,
     borderBottomWidth: 2,
     textAlign: "center",
-  },
-  titleContainer: {
-    margin: 20,
   },
   instructionText: {
     color: theme.color.primary,
